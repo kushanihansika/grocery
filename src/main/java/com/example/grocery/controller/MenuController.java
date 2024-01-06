@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,19 +31,14 @@ public class MenuController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createMenu(@RequestBody MenuCreateRequest createMenuRequest) {
-        try {
-            planedMenusService.saveMenu(createMenuRequest);
-            return new ResponseEntity<>("Menu created successfully", HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error creating menu: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<MenuDetailsDto> createMenu(@RequestBody MenuCreateRequest createMenuRequest) {
+        MenuDetailsDto planedMenus=  planedMenusService.saveMenu(createMenuRequest);
+            return new ResponseEntity<>(planedMenus, HttpStatus.CREATED);
     }
 
     @GetMapping("/getByDateRange")
     public ResponseEntity<Page<MenuDetailsDto>> getMenusByDateRange(
             @RequestParam String filterRequest) {
-
         try {
             final MenuFilterRequest request = objectMapper.readValue(filterRequest, MenuFilterRequest.class);
             Pageable pageable = PageRequest.of(request.getPageNumber(), request.getPageSize());
@@ -57,7 +51,7 @@ public class MenuController {
     }
 
     @GetMapping("/{menuId}")
-    public ResponseEntity<MenuDetailsDto> getById(@RequestParam(value = "menuId") String menuId) {
+    public ResponseEntity<MenuDetailsDto> getById(@PathVariable String menuId) {
 
             MenuDetailsDto menuDetailsDto= planedMenusService.getMenuById(Long.valueOf(menuId));
             return new ResponseEntity<>(menuDetailsDto, HttpStatus.OK);

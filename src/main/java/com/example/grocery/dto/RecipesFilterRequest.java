@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RecipesFilterRequest {
 
-    private MenueType menueType;
+    private String menueType;
     private int days;
-    private Type type;
+    private String type;
     private int servings;
     private int pageSize;
     private int pageNumber;

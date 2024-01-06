@@ -27,29 +27,22 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
     private RecipesService recipeService;
 
 
-    public PlanedMenus saveMenu(MenuCreateRequest createRequest) {
-
+    public MenuDetailsDto saveMenu(MenuCreateRequest createRequest) {
             PlanedMenus planedMenus = new PlanedMenus();
             planedMenus.setUserId(createRequest.getUserId());
             planedMenus.setDays(createRequest.getDays());
             planedMenus.setStartDate(createRequest.getStartDate());
             planedMenus.setEndData(createRequest.getEndDate());
-
             // Fetch recipes by their IDs
             Set<Recipe> recipes = new HashSet<>();
             for (String recipeId : createRequest.getRecipesList()) {
                 Recipe recipe = recipeService.getRecipeById(Long.parseLong(recipeId));
                 recipes.add(recipe);
             }
-
             planedMenus.setRecipes(recipes);
-
             // Save the menu
             planedMenusRepository.save(planedMenus);
-
-          return null;
-
-
+          return getMenuDetailsDto(planedMenus);
     }
 
     public Page<MenuDetailsDto> getMenusByDateRange(MenuFilterRequest menuFilterRequest, Pageable pageable) {
@@ -63,7 +56,6 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
     }
 
     private MenuDetailsDto getMenuDetailsDto(PlanedMenus planedMenus){
-
         return MenuDetailsDto.builder().id(planedMenus.getId())
                 .userId(Long.parseLong(planedMenus.getUserId()))
                 .startDate(planedMenus.getStartDate()).recipeDetails(getRecipeDetailsDto(planedMenus.getRecipes()))

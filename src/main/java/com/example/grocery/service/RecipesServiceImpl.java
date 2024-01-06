@@ -1,9 +1,16 @@
 package com.example.grocery.service;
 
+import com.example.grocery.dto.MenuDetailsDto;
+import com.example.grocery.dto.MenuFilterRequest;
 import com.example.grocery.dto.RecipeDetailsDto;
+import com.example.grocery.dto.RecipesFilterRequest;
 import com.example.grocery.entity.Recipe;
 import com.example.grocery.repository.RecipesRepository;
+import com.example.grocery.utils.MenuSpecifications;
+import com.example.grocery.utils.RecipesSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -26,6 +33,17 @@ public class RecipesServiceImpl implements RecipesService {
     public RecipeDetailsDto getRecipeDetailsById(Long recipeId) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
         return recipeOptional.map(this::getRecipeDetailsDto).orElse(null);
+    }
+
+    public Page<RecipeDetailsDto> getAllRecipes(RecipesFilterRequest recipesFilterRequest, Pageable pageable) {
+      try {
+          return recipeRepository.findAll(RecipesSpecifications.generateFilterRecipeQuery(recipesFilterRequest), pageable).map(this::getRecipeDetailsDto
+          );
+      }catch (Exception e){
+          e.printStackTrace();
+          throw e;
+      }
+
     }
     public RecipeDetailsDto getRecipeDetailsDto(Recipe recipe){
 

@@ -36,13 +36,13 @@ public class MenuController {
             return new ResponseEntity<>(planedMenus, HttpStatus.CREATED);
     }
 
-    @GetMapping("/getByDateRange")
+    @PostMapping("/getAll")
     public ResponseEntity<Page<MenuDetailsDto>> getMenusByDateRange(
-            @RequestParam String filterRequest) {
+            @RequestBody MenuFilterRequest filterRequest) {
         try {
-            final MenuFilterRequest request = objectMapper.readValue(filterRequest, MenuFilterRequest.class);
-            Pageable pageable = PageRequest.of(request.getPageNumber(), request.getPageSize());
-            Page<MenuDetailsDto> menus = planedMenusService.getMenusByDateRange(request, pageable);
+
+            Pageable pageable = PageRequest.of(filterRequest.getPageNumber(), filterRequest.getPageSize());
+            Page<MenuDetailsDto> menus = planedMenusService.getMenusByDateRange(filterRequest, pageable);
 
             return new ResponseEntity<>(menus, HttpStatus.OK);
         } catch (Exception e) {

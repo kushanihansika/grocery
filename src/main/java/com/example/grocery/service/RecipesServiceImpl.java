@@ -1,24 +1,19 @@
 package com.example.grocery.service;
-
-import com.example.grocery.dto.MenuDetailsDto;
-import com.example.grocery.dto.MenuFilterRequest;
 import com.example.grocery.dto.RecipeDetailsDto;
 import com.example.grocery.dto.RecipesFilterRequest;
 import com.example.grocery.entity.Recipe;
 import com.example.grocery.repository.RecipesRepository;
-import com.example.grocery.utils.MenuSpecifications;
 import com.example.grocery.utils.RecipesSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipesServiceImpl implements RecipesService {
@@ -35,10 +30,19 @@ public class RecipesServiceImpl implements RecipesService {
         return recipeOptional.map(this::getRecipeDetailsDto).orElse(null);
     }
 
-    public Page<RecipeDetailsDto> getAllRecipes(RecipesFilterRequest recipesFilterRequest, Pageable pageable) {
+    public List<RecipeDetailsDto> getAllRecipes( String menueType, Integer days, String type, Integer servings,Long recipeId) {
       try {
-          return recipeRepository.findAll(RecipesSpecifications.generateFilterRecipeQuery(recipesFilterRequest), pageable).map(this::getRecipeDetailsDto
-          );
+          List<RecipeDetailsDto> recipeDetailsDtoList = new ArrayList<>();
+          if(recipeId != null){
+              RecipeDetailsDto recipeDetailsDto= getRecipeDetailsById(recipeId);
+              recipeDetailsDtoList.add(recipeDetailsDto);
+              return recipeDetailsDtoList;
+          }
+          RecipesFilterRequest request = new RecipesFilterRequest();
+          request.setType(type);
+          request.setMenueType(menueType);
+          request.setServings(servings);
+          return recipeRepository.findAll(RecipesSpecifications.generateFilterRecipeQuery(request)).stream().map(this::getRecipeDetailsDto).collect(Collectors.toList());
       }catch (Exception e){
           e.printStackTrace();
           throw e;

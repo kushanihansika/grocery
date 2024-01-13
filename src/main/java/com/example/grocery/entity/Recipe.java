@@ -54,6 +54,9 @@ public class Recipe {
     @Column(name = "healthy_details")
     private String healthyDetails;
 
+    @Column(name = "ingredients_quantity")
+    private String ingredientsQuantity;
+
     @ManyToMany(mappedBy = "recipes")
     private Set<PlanedMenus> planedMenus = new HashSet<>();
 }

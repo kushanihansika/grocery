@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class RecipesFilterRequest {
 
     private String menueType;
-    private int days;
+    private Integer days;
     private String type;
-    private int servings;
+    private Integer servings;
     private int pageSize;
     private int pageNumber;
 

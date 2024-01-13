@@ -20,7 +20,7 @@ public class RecipesSpecifications {
                 p = cb.and(p,
                         cb.equal(root.get("type"), filterRequest.getType()));
             }
-            if (filterRequest.getServings()!= 0) {
+            if (filterRequest.getServings() != null) {
                 p = cb.and(p, cb.equal(root.get("servings"), filterRequest.getServings()));
             }
             return p;

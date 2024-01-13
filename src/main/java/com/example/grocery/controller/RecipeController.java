@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/recipes")
 public class RecipeController {
@@ -24,21 +26,24 @@ public class RecipeController {
         this.objectMapper = objectMapper;
     }
 
-    @PostMapping("/getAll")
-    public ResponseEntity<Page<RecipeDetailsDto>> getAllRecipes(
-            @RequestBody RecipesFilterRequest filterRequest) {
+    @GetMapping("/getAll")
+    public ResponseEntity<List<RecipeDetailsDto>> getAllRecipes(
+            @RequestParam(value = "menueType" ,required = false) String menueType,
+            @RequestParam(value = "days",required = false)Integer days,
+            @RequestParam(value = "type",required = false)String type,
+            @RequestParam(value = "servings",required = false)Integer servings,
+            @RequestParam(value = "recipeId",required = false)Long recipeId
+            ) {
         try {
-            //final RecipesFilterRequest filterRequest = objectMapper.readValue(filterRequest, RecipesFilterRequest.class);
-            Pageable pageable = PageRequest.of(filterRequest.getPageNumber(), filterRequest.getPageSize());
             System.out.println("calling");
-            Page<RecipeDetailsDto> menus = recipesService.getAllRecipes(filterRequest, pageable);
+            List<RecipeDetailsDto> menus = recipesService.getAllRecipes( menueType,  days,  type,  servings,recipeId);
             return new ResponseEntity<>(menus, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/{recipeId}")
+    @GetMapping("/recipe-details/{recipeId}")
     public ResponseEntity<RecipeDetailsDto> getById(@PathVariable String recipeId) {
         RecipeDetailsDto recipeDetailsDto= recipesService.getRecipeDetailsById(Long.valueOf(recipeId));
         return new ResponseEntity<>(recipeDetailsDto, HttpStatus.OK);

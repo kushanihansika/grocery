@@ -1,9 +1,6 @@
 package com.example.grocery.service;
 
-import com.example.grocery.dto.MenuCreateRequest;
-import com.example.grocery.dto.MenuDetailsDto;
-import com.example.grocery.dto.MenuFilterRequest;
-import com.example.grocery.dto.RecipeDetailsDto;
+import com.example.grocery.dto.*;
 import com.example.grocery.entity.PlanedMenus;
 import com.example.grocery.entity.Recipe;
 import com.example.grocery.repository.PlanedMenusRepository;
@@ -45,9 +42,22 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
           return getMenuDetailsDto(planedMenus);
     }
 
-    public Page<MenuDetailsDto> getMenusByDateRange(MenuFilterRequest menuFilterRequest, Pageable pageable) {
-        return planedMenusRepository.findAll(MenuSpecifications.filterMenus(menuFilterRequest), pageable).map(this::getMenuDetailsDto
-        );
+    public List<MenuDetailsDto> getMenusByDateRange(String userId, Long startDate, Long endDate, String sortType, Long menuId) {
+        List<MenuDetailsDto> response = new ArrayList<>();
+        if(menuId != null){
+            Optional<PlanedMenus > menus = planedMenusRepository.findById(menuId);
+            if(menus.isPresent()){
+               MenuDetailsDto menuDetailsDto= getMenuDetailsDto(menus.get());
+                response.add(menuDetailsDto);
+                return response;
+            }
+        }
+        MenuFilterRequest menuFilterRequest = new MenuFilterRequest();
+        menuFilterRequest.setEndDate(endDate);
+        menuFilterRequest.setStartDate(startDate);
+        menuFilterRequest.setSort(SortType.valueOf(sortType));
+        menuFilterRequest.setUserId(userId);
+        return planedMenusRepository.findAll(MenuSpecifications.filterMenus(menuFilterRequest)).stream().map(this::getMenuDetailsDto).collect(Collectors.toList());
     }
 
     public MenuDetailsDto getMenuById(Long menuId){

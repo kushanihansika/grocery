@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/menu")
 public class MenuController {
@@ -37,12 +39,17 @@ public class MenuController {
     }
 
     @PostMapping("/getAll")
-    public ResponseEntity<Page<MenuDetailsDto>> getMenusByDateRange(
-            @RequestBody MenuFilterRequest filterRequest) {
+    public ResponseEntity<List<MenuDetailsDto>> getMenusByDateRange(
+            @RequestParam(value = "userId" ,required = false) String userId,
+            @RequestParam(value = "startDate",required = false)Long startDate,
+            @RequestParam(value = "endDate",required = false)Long endDate,
+            @RequestParam(value = "sortType",required = false)String sortType,
+            @RequestParam(value = "menuId",required = false)Long menuId
+           ) {
         try {
 
-            Pageable pageable = PageRequest.of(filterRequest.getPageNumber(), filterRequest.getPageSize());
-            Page<MenuDetailsDto> menus = planedMenusService.getMenusByDateRange(filterRequest, pageable);
+
+            List<MenuDetailsDto> menus = planedMenusService.getMenusByDateRange( userId,startDate, endDate, sortType, menuId);
 
             return new ResponseEntity<>(menus, HttpStatus.OK);
         } catch (Exception e) {

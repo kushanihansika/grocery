@@ -1,5 +1,7 @@
 package com.example.grocery.controller;
 
+import com.example.grocery.dto.CreateGroceryListDto;
+import com.example.grocery.dto.GroceryDetailsDto;
 import com.example.grocery.dto.RecipeDetailsDto;
 import com.example.grocery.dto.RecipesFilterRequest;
 import com.example.grocery.service.RecipesService;
@@ -46,6 +48,12 @@ public class RecipeController {
     @GetMapping("/recipe-details/{recipeId}")
     public ResponseEntity<RecipeDetailsDto> getById(@PathVariable String recipeId) {
         RecipeDetailsDto recipeDetailsDto= recipesService.getRecipeDetailsById(Long.valueOf(recipeId));
+        return new ResponseEntity<>(recipeDetailsDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/grocery-list")
+    public ResponseEntity<GroceryDetailsDto> generateGroceryList(@RequestBody CreateGroceryListDto groceryListDto) {
+        GroceryDetailsDto recipeDetailsDto= recipesService.getGroceryDetailsDto(groceryListDto);
         return new ResponseEntity<>(recipeDetailsDto, HttpStatus.OK);
     }
 }

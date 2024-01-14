@@ -30,6 +30,7 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
             planedMenus.setDays(createRequest.getDays());
             planedMenus.setStartDate(createRequest.getStartDate());
             planedMenus.setEndData(createRequest.getEndDate());
+            planedMenus.setGeneratedGroceryListId(createRequest.getGeneratedGroceryListId());
             // Fetch recipes by their IDs
             Set<Recipe> recipes = new HashSet<>();
             for (String recipeId : createRequest.getRecipesList()) {

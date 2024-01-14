@@ -17,6 +17,7 @@ public class PlanedMenus {
     private int days;
     private Long startDate;
     private Long endData;
+    private Long generatedGroceryListId;
 
     @ManyToMany
     @JoinTable(

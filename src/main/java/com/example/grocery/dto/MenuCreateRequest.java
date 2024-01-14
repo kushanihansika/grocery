@@ -13,5 +13,6 @@ public class MenuCreateRequest {
     private int days;
     private Long startDate;
     private Long endDate;
+    private Long generatedGroceryListId;
     private List<String> recipesList;
 }

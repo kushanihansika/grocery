@@ -38,7 +38,7 @@ public class MenuController {
             return new ResponseEntity<>(planedMenus, HttpStatus.CREATED);
     }
 
-    @GetMappingg("/getAll")
+    @GetMapping("/getAll")
     public ResponseEntity<List<MenuDetailsDto>> getMenusByDateRange(
             @RequestParam(value = "userId" ,required = false) String userId,
             @RequestParam(value = "startDate",required = false)Long startDate,

@@ -3,7 +3,9 @@ package com.example.grocery.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,11 +21,11 @@ public class PlanedMenus {
     private Long endData;
     private Long generatedGroceryListId;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,cascade =CascadeType.ALL)
     @JoinTable(
             name = "planed_menus_recipes",
             joinColumns = @JoinColumn(name = "planed_menu_id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id")
     )
-    private Set<Recipe> recipes = new HashSet<>();
+    private List<Recipe> recipes = new ArrayList<>();
 }

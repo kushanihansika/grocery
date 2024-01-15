@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -32,7 +33,7 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
             planedMenus.setEndData(createRequest.getEndDate());
             planedMenus.setGeneratedGroceryListId(createRequest.getGeneratedGroceryListId());
             // Fetch recipes by their IDs
-            Set<Recipe> recipes = new HashSet<>();
+            List<Recipe> recipes = new ArrayList<>();
             for (String recipeId : createRequest.getRecipesList()) {
                 Recipe recipe = recipeService.getRecipeById(Long.parseLong(recipeId));
                 recipes.add(recipe);
@@ -60,10 +61,21 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
         menuFilterRequest.setUserId(userId);
         return planedMenusRepository.findAll(MenuSpecifications.filterMenus(menuFilterRequest)).stream().map(this::getMenuDetailsDto).collect(Collectors.toList());
     }
-
+    @Transactional
     public MenuDetailsDto getMenuById(Long menuId){
         Optional<PlanedMenus> planedMenusOptional = planedMenusRepository.findById(menuId);
-        return planedMenusOptional.map(this::getMenuDetailsDto).orElse(null);
+        return planedMenusOptional.map(planedMenus -> {
+
+            List<Recipe> recipes = planedMenus.getRecipes();
+
+            return MenuDetailsDto.builder()
+                    .id(planedMenus.getId())
+                    .userId(Long.parseLong(planedMenus.getUserId()))
+                    .startDate(planedMenus.getStartDate())
+                    .recipeDetails(getRecipeDetailsDto(recipes))
+                    .endDate(planedMenus.getEndData())
+                    .build();
+        }).orElse(null);
     }
 
     private MenuDetailsDto getMenuDetailsDto(PlanedMenus planedMenus){
@@ -73,7 +85,7 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
                 .endDate(planedMenus.getEndData()).build();
     }
 
-    private List<RecipeDetailsDto> getRecipeDetailsDto(Set<Recipe> recipes){
+    private List<RecipeDetailsDto> getRecipeDetailsDto(List<Recipe> recipes){
        return recipes.stream().map(this::getRecipeDetailsDto
        ).collect(Collectors.toList());
 

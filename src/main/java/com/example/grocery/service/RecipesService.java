@@ -14,7 +14,6 @@ public interface RecipesService {
      Recipe getRecipeById(Long recipeId);
      RecipeDetailsDto getRecipeDetailsById(Long recipeId);
      RecipeDetailsDto getRecipeDetailsDto(Recipe recipe);
-
      GroceryDetailsDto getGroceryDetailsDto(CreateGroceryListDto groceryListDto);
      List<RecipeDetailsDto> getAllRecipes(String menueType, Integer days, String type, Integer servings,Long recipeId);
 }

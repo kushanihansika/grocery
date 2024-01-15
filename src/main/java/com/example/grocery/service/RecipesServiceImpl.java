@@ -3,12 +3,9 @@ import com.example.grocery.dto.*;
 import com.example.grocery.entity.Recipe;
 import com.example.grocery.repository.RecipesRepository;
 import com.example.grocery.utils.RecipesSpecifications;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,13 +49,11 @@ public class RecipesServiceImpl implements RecipesService {
 
 
     public RecipeDetailsDto getRecipeDetailsDto(Recipe recipe){
-
         Map<String, String> nutritionMap = new HashMap<>();
         String[] pairs = recipe.getHealthyDetails().split(",");
         for (String pair : pairs) {
             // Split each pair by space to separate key and value
             String[] keyValue = pair.split(" ", 2);
-
             // Check if there are two elements in the keyValue array
             if (keyValue.length == 2) {
                 String key = keyValue[0];
@@ -66,9 +61,7 @@ public class RecipesServiceImpl implements RecipesService {
 
                 nutritionMap.put(key, value);
             }
-
         }
-
         return RecipeDetailsDto.builder().id(recipe.getId())
                 .url(recipe.getUrl())
                 .title(recipe.getTitle())
@@ -92,21 +85,20 @@ public class RecipesServiceImpl implements RecipesService {
         Map<String, String> stepMap = new HashMap<>();
         Pattern pattern = Pattern.compile("Step\\d+:\\s(.*?)(?=(Step\\d+|$))", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(input);
-
         while (matcher.find()) {
             String step = matcher.group(1).trim();
             String stepNumber = matcher.group().split(":")[0].trim();
             stepMap.put(stepNumber, step);
         }
-
         return stepMap;
     }
 
     public GroceryDetailsDto getGroceryDetailsDto(CreateGroceryListDto groceryListDto){
-
-        GroceryDetailsDto groceryDetailsDto = new GroceryDetailsDto();
+       GroceryDetailsDto groceryDetailsDto = new GroceryDetailsDto();
        groceryDetailsDto.setGroceryListId(1L);
        groceryDetailsDto.setGroceryItems(getGroceryItems());
+        ObjectMapper mapper = new ObjectMapper();
+
        return groceryDetailsDto;
     }
 
@@ -152,9 +144,7 @@ public class RecipesServiceImpl implements RecipesService {
         items.add(groceryItem6);
         items.add(groceryItem7);
         items.add(groceryItem8);
-
         return items;
-
     }
 
     private  List<GroceryPromotion> getGroceryPromotion(){

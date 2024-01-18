@@ -57,7 +57,7 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
         MenuFilterRequest menuFilterRequest = new MenuFilterRequest();
         menuFilterRequest.setEndDate(endDate);
         menuFilterRequest.setStartDate(startDate);
-        menuFilterRequest.setSort(SortType.valueOf(sortType));
+        menuFilterRequest.setSort(sortType !=null?SortType.valueOf(sortType):null);
         menuFilterRequest.setUserId(userId);
         return planedMenusRepository.findAll(MenuSpecifications.filterMenus(menuFilterRequest)).stream().map(this::getMenuDetailsDto).collect(Collectors.toList());
     }

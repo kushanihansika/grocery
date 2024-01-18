@@ -53,7 +53,8 @@ public class MenuController {
 
             return new ResponseEntity<>(menus, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw e;
+            //return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

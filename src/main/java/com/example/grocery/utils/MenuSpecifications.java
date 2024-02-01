@@ -3,13 +3,9 @@ package com.example.grocery.utils;
 import com.example.grocery.dto.MenuFilterRequest;
 import com.example.grocery.dto.SortType;
 import com.example.grocery.entity.PlanedMenus;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class MenuSpecifications {

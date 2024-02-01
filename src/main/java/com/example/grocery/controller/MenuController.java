@@ -33,7 +33,7 @@ public class MenuController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<MenuDetailsDto> createMenu(@RequestBody MenuCreateRequest createMenuRequest) {
+    public ResponseEntity<MenuDetailsDto> createMenu(@RequestBody MenuCreateRequest createMenuRequest) throws Exception {
         MenuDetailsDto planedMenus=  planedMenusService.saveMenu(createMenuRequest);
             return new ResponseEntity<>(planedMenus, HttpStatus.CREATED);
     }
@@ -59,7 +59,7 @@ public class MenuController {
     }
 
     @GetMapping("/{menuId}")
-    public ResponseEntity<MenuDetailsDto> getById(@PathVariable String menuId) {
+    public ResponseEntity<MenuDetailsDto> getById(@PathVariable String menuId) throws Exception {
 
             MenuDetailsDto menuDetailsDto= planedMenusService.getMenuById(Long.valueOf(menuId));
             return new ResponseEntity<>(menuDetailsDto, HttpStatus.OK);

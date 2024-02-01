@@ -21,6 +21,11 @@ public class RecipesServiceImpl implements RecipesService {
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
         return recipeOptional.orElse(null);
     }
+
+    public Recipe getRecipeByTitle(String recipeName) {
+       return recipeRepository.findByTitle(recipeName);
+
+    }
     public RecipeDetailsDto getRecipeDetailsById(Long recipeId) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
         return recipeOptional.map(this::getRecipeDetailsDto).orElse(null);
@@ -107,35 +112,35 @@ public class RecipesServiceImpl implements RecipesService {
         GroceryItem groceryItem1 = new GroceryItem();
         groceryItem1.setIngredientName("Sugar");
         groceryItem1.setQuantity("1Kg 500g");
-        groceryItem1.setGroceryPromotions(getGroceryPromotion());
+        groceryItem1.setGroceryPromotionDtos(getGroceryPromotion());
         GroceryItem groceryItem2 = new GroceryItem();
         groceryItem2.setIngredientName("Salt");
         groceryItem2.setQuantity("1Kg 100g");
-        groceryItem2.setGroceryPromotions(getGroceryPromotion());
+        groceryItem2.setGroceryPromotionDtos(getGroceryPromotion());
         GroceryItem groceryItem3 = new GroceryItem();
         groceryItem3.setIngredientName("Bread");
         groceryItem3.setQuantity("2 ");
-        groceryItem3.setGroceryPromotions(getGroceryPromotion());
+        groceryItem3.setGroceryPromotionDtos(getGroceryPromotion());
         GroceryItem groceryItem4 = new GroceryItem();
         groceryItem4.setIngredientName("Flour");
         groceryItem4.setQuantity("1Kg 500g");
-        groceryItem4.setGroceryPromotions(getGroceryPromotion());
+        groceryItem4.setGroceryPromotionDtos(getGroceryPromotion());
         GroceryItem groceryItem5 = new GroceryItem();
         groceryItem5.setIngredientName("Rice");
         groceryItem5.setQuantity("1Kg 500g");
-        groceryItem5.setGroceryPromotions(getGroceryPromotion());
+        groceryItem5.setGroceryPromotionDtos(getGroceryPromotion());
         GroceryItem groceryItem6 = new GroceryItem();
         groceryItem6.setIngredientName("Cream Cheese");
         groceryItem6.setQuantity("500g");
-        groceryItem6.setGroceryPromotions(getGroceryPromotion());
+        groceryItem6.setGroceryPromotionDtos(getGroceryPromotion());
         GroceryItem groceryItem7 = new GroceryItem();
         groceryItem7.setIngredientName("Chicken");
         groceryItem7.setQuantity("500g");
-        groceryItem7.setGroceryPromotions(getGroceryPromotion());
+        groceryItem7.setGroceryPromotionDtos(getGroceryPromotion());
         GroceryItem groceryItem8 = new GroceryItem();
         groceryItem8.setIngredientName("Eggs");
         groceryItem8.setQuantity("500g");
-        groceryItem8.setGroceryPromotions(getGroceryPromotion());
+        groceryItem8.setGroceryPromotionDtos(getGroceryPromotion());
         items.add(groceryItem1);
         items.add(groceryItem2);
         items.add(groceryItem3);
@@ -147,23 +152,23 @@ public class RecipesServiceImpl implements RecipesService {
         return items;
     }
 
-    private  List<GroceryPromotion> getGroceryPromotion(){
-        List<GroceryPromotion> groceryPromotions = new ArrayList<>();
-        GroceryPromotion groceryPromotion1 = new GroceryPromotion();
-        groceryPromotion1.setSuperMarketName(Supermarket.ALDI.name());
-        groceryPromotion1.setPrice(2);
+    private  List<GroceryPromotionDto> getGroceryPromotion(){
+        List<GroceryPromotionDto> groceryPromotionDtos = new ArrayList<>();
+        GroceryPromotionDto groceryPromotionDto1 = new GroceryPromotionDto();
+        groceryPromotionDto1.setSuperMarketName(Supermarket.ALDI.name());
+        groceryPromotionDto1.setPrice(2);
 
-        GroceryPromotion groceryPromotion2 = new GroceryPromotion();
-        groceryPromotion2.setSuperMarketName(Supermarket.KELLS.name());
-        groceryPromotion2.setPrice(5);
+        GroceryPromotionDto groceryPromotionDto2 = new GroceryPromotionDto();
+        groceryPromotionDto2.setSuperMarketName(Supermarket.KELLS.name());
+        groceryPromotionDto2.setPrice(5);
 
-        GroceryPromotion groceryPromotion3 = new GroceryPromotion();
-        groceryPromotion3.setSuperMarketName(Supermarket.SPAR.name());
-        groceryPromotion3.setPrice(5);
+        GroceryPromotionDto groceryPromotionDto3 = new GroceryPromotionDto();
+        groceryPromotionDto3.setSuperMarketName(Supermarket.SPAR.name());
+        groceryPromotionDto3.setPrice(5);
 
-        groceryPromotions.add(groceryPromotion1);
-        groceryPromotions.add(groceryPromotion2);
-        groceryPromotions.add(groceryPromotion3);
-        return groceryPromotions;
+        groceryPromotionDtos.add(groceryPromotionDto1);
+        groceryPromotionDtos.add(groceryPromotionDto2);
+        groceryPromotionDtos.add(groceryPromotionDto3);
+        return groceryPromotionDtos;
     }
 }

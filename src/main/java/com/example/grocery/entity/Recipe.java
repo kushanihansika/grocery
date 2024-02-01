@@ -1,12 +1,8 @@
 package com.example.grocery.entity;
-
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "recipe")
@@ -59,6 +55,8 @@ public class Recipe {
     @Column(name = "ingredients_quantity")
     private String ingredientsQuantity;
 
+
     @ManyToMany(mappedBy = "recipes",fetch = FetchType.EAGER)
-    private List<PlanedMenus> planedMenus = new ArrayList<>();
+    private List<Days> days = new ArrayList<>();
+
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -17,4 +18,6 @@ public class MenuDetailsDto {
     private Long startDate;
     private Long endDate;
     private List<RecipeDetailsDto> recipeDetails;
+    private List<DaysDetailsDto> recommended;
+    private GroceryDetailsDto groceryDetailsDto;
 }

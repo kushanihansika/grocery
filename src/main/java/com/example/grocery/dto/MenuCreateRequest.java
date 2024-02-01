@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 @Data
 @AllArgsConstructor
@@ -11,8 +12,10 @@ import java.util.List;
 public class MenuCreateRequest {
     private String userId;
     private int days;
-    private Long startDate;
-    private Long endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Long generatedGroceryListId;
-    private List<String> recipesList;
+    private MenueType type;
+    private Boolean isVeg;
+
 }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroceryPromotion {
+public class GroceryPromotionDto {
 
 private String superMarketName;
 private double price;

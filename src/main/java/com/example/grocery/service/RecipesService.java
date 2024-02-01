@@ -12,6 +12,8 @@ import java.util.List;
 @Service
 public interface RecipesService {
      Recipe getRecipeById(Long recipeId);
+
+     Recipe getRecipeByTitle(String recipeName);
      RecipeDetailsDto getRecipeDetailsById(Long recipeId);
      RecipeDetailsDto getRecipeDetailsDto(Recipe recipe);
      GroceryDetailsDto getGroceryDetailsDto(CreateGroceryListDto groceryListDto);

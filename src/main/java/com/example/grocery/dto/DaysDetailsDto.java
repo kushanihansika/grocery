@@ -9,12 +9,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroceryItem {
-
-   private String ingredientName;
-
-   private String quantity;
-   private String unit;
-
-   private List<GroceryPromotionDto> groceryPromotionDtos;
+public class DaysDetailsDto {
+    private String dayName;
+    private Long dayId;
+    private List<DaysRecipeDetailsDto> daysRecipeDetailsDto;
 }

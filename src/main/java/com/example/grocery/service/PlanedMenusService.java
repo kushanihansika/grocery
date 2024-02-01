@@ -8,9 +8,9 @@ import java.util.List;
 
 @Service
 public interface PlanedMenusService {
-    MenuDetailsDto saveMenu(MenuCreateRequest createRequest);
+    MenuDetailsDto saveMenu(MenuCreateRequest createRequest) throws Exception;
 
     List<MenuDetailsDto> getMenusByDateRange(String userId, Long startDate, Long endDate, String sortType, Long menuId);
 
-    MenuDetailsDto getMenuById(Long menuId);
+    MenuDetailsDto getMenuById(Long menuId) throws Exception;
 }

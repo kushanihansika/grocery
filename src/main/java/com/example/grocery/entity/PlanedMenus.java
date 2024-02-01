@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "planed_menus")
@@ -21,11 +19,7 @@ public class PlanedMenus {
     private Long endData;
     private Long generatedGroceryListId;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade =CascadeType.ALL)
-    @JoinTable(
-            name = "planed_menus_recipes",
-            joinColumns = @JoinColumn(name = "planed_menu_id"),
-            inverseJoinColumns = @JoinColumn(name = "recipe_id")
-    )
-    private List<Recipe> recipes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "planedMenus",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Days> daysList = new ArrayList<>();
 }

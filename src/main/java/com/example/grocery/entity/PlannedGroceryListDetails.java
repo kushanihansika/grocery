@@ -21,4 +21,9 @@ public class PlannedGroceryListDetails {
 
     @OneToMany(mappedBy = "plannedGroceryListDetails",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<GroceryDetails> groceryDetails = new ArrayList<>();
+
+    public void setGroceryDetails(List<GroceryDetails> groceryDetails) {
+        groceryDetails.forEach(groceryDetails1 -> groceryDetails1.setPlannedGroceryListDetails(this));
+        this.groceryDetails = groceryDetails;
+    }
 }

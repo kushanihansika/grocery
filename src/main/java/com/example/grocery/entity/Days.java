@@ -26,7 +26,7 @@ public class Days {
     private PlanedMenus planedMenus;
 
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade =CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,cascade =CascadeType.ALL)
     @JoinTable(
             name = "days_recipes",
             joinColumns = @JoinColumn(name = "day_id"),

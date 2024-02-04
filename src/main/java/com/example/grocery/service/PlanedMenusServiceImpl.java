@@ -122,6 +122,7 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
 
         return selectedRecipes;
     }
+    @Transactional
     public List<MenuDetailsDto> getMenusByDateRange(String userId, Long startDate, Long endDate, String sortType, Long menuId) {
         List<MenuDetailsDto> response = new ArrayList<>();
         if(menuId != null){

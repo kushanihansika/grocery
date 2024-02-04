@@ -11,7 +11,7 @@ spring:
       FAIL_ON_EMPTY_BEANS: false
   jpa:
     database: POSTGRESQL
-    show-sql: true
+    show-sql: false
     generate-ddl: true
     hibernate.ddl-auto: update
   datasource:

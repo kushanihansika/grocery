@@ -56,7 +56,7 @@ public class Recipe {
     private String ingredientsQuantity;
 
 
-    @ManyToMany(mappedBy = "recipes",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "recipes",fetch = FetchType.EAGER)
     private List<Days> days = new ArrayList<>();
 
 }

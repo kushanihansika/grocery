@@ -22,4 +22,9 @@ public class PlanedMenus {
 
     @OneToMany(mappedBy = "planedMenus",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Days> daysList = new ArrayList<>();
+
+    public void setDaysList(List<Days> daysList) {
+        daysList.forEach(days1 -> days1.setPlanedMenus(this));
+        this.daysList = daysList;
+    }
 }

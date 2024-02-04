@@ -35,6 +35,12 @@
 			<version>1.8</version> <!-- Use the latest version available -->
 		</dependency>
 		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.1.0</version> <!-- Check for the latest version on the Apache POI website -->
+		</dependency>
+
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>

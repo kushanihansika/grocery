@@ -4,15 +4,16 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "grocery_promotion")
+@Table(name = "super_market")
 @Data
-public class GroceryPromotion {
+public class SuperMarket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String shopName;
-    private double price;
-    private double discountedRate;
-    private  String status;
+
+    private String lat;
+    private String lon;
 }

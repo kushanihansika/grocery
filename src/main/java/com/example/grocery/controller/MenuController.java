@@ -1,8 +1,6 @@
 package com.example.grocery.controller;
 
-import com.example.grocery.dto.MenuCreateRequest;
-import com.example.grocery.dto.MenuDetailsDto;
-import com.example.grocery.dto.MenuFilterRequest;
+import com.example.grocery.dto.*;
 import com.example.grocery.service.PlanedMenusService;
 import com.example.grocery.service.RecipesService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,4 +63,12 @@ public class MenuController {
             return new ResponseEntity<>(menuDetailsDto, HttpStatus.OK);
 
     }
+
+    @PutMapping()
+    public ResponseEntity<Void> updateGroceryList(@RequestBody GroceryDetailsUpdatedDto groceryDetailsDto)  {
+        planedMenusService.updatedMenuPromotions(groceryDetailsDto);
+        return new ResponseEntity<>( HttpStatus.OK);
+    }
+
+
 }

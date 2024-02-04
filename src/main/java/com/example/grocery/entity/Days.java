@@ -2,13 +2,16 @@ package com.example.grocery.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "days")
-@Data
+@Setter
+@Getter
 public class Days {
 
     @Id
@@ -23,7 +26,7 @@ public class Days {
     private PlanedMenus planedMenus;
 
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade =CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER,cascade =CascadeType.ALL)
     @JoinTable(
             name = "days_recipes",
             joinColumns = @JoinColumn(name = "day_id"),

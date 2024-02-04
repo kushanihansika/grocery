@@ -2,6 +2,7 @@ package com.example.grocery.service;
 
 import com.example.grocery.dto.*;
 import com.example.grocery.entity.*;
+import com.example.grocery.repository.GroceryDetailsRepository;
 import com.example.grocery.repository.PlanedMenusRepository;
 import com.example.grocery.repository.PlannedGroceryListDetailsRepository;
 import com.example.grocery.utils.DateCalculator;
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class PlanedMenusServiceImpl implements PlanedMenusService{
 
     @Autowired
@@ -31,6 +33,9 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
 
     @Autowired
     private PlannedGroceryListDetailsRepository plannedGroceryListDetailsRepository;
+
+    @Autowired
+    private GroceryDetailsRepository groceryDetailsRepository;
     private final String fastApiBaseUrl = "http://127.0.0.1:8000";
 
     public MenuDetailsDto saveMenu(MenuCreateRequest createRequest) throws Exception {
@@ -152,7 +157,20 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
 
 
     }
+
+    public void  updatedMenuPromotions(GroceryDetailsUpdatedDto groceryDetailsUpdatedDto){
+        for (GroceryItem groceryItem :groceryDetailsUpdatedDto.getGroceryItems()){
+            Optional<GroceryDetails> groceryDetails = groceryDetailsRepository.findById(groceryItem.getGroceryItemId());
+            GroceryDetails details = groceryDetails.get();
+            details.setPromotionId(groceryItem.getGroceryPromotionDtos().get(0).getPromotionId());
+            details.setChosenSuperMarket(groceryItem.getGroceryPromotionDtos().get(0).getSuperMarketName());
+            details.setDiscountRate(groceryItem.getGroceryPromotionDtos().get(0).getPrice());
+            groceryDetailsRepository.save(details);
+        }
+
+    }
     private List<DaysDetailsDto> getDaysDetailsDto(List<Days> days){
+        System.out.println("days"+days.toString());
     List<DaysDetailsDto> dtos = new ArrayList<>();
     for (Days day : days){
         DaysDetailsDto detailsDto = new DaysDetailsDto();
@@ -165,10 +183,12 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
     }
     private List<DaysRecipeDetailsDto> getDaysRecipeDetailsDto(Days day){
         List<DaysRecipeDetailsDto> detailsDtoList = new ArrayList<>();
+        System.out.println("recipes"+day.getRecipes());
         for (Recipe recipe: day.getRecipes()){
             DaysRecipeDetailsDto daysRecipeDetailsDto = new DaysRecipeDetailsDto();
             daysRecipeDetailsDto.setMenueType(MenueType.valueOf(recipe.getMenuType()));
             daysRecipeDetailsDto.setRecipeDetailsDto(getRecipeDetailsDto(recipe));
+            detailsDtoList.add(daysRecipeDetailsDto);
         }
         return detailsDtoList;
     }
@@ -176,7 +196,10 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
         //getRecipeDetailsDto(planedMenus.getRecipes())
         return MenuDetailsDto.builder().id(planedMenus.getId())
                 .userId(Long.parseLong(planedMenus.getUserId()))
-                .startDate(planedMenus.getStartDate()).recipeDetails(null).groceryDetailsDto(getGroceryDetailsDto(planedMenus.getGeneratedGroceryListId())).recommended(getDaysDetailsDto(planedMenus.getDaysList()))
+                .startDate(planedMenus.getStartDate())
+                .recipeDetails(null)
+                .groceryDetailsDto(getGroceryDetailsDto(planedMenus.getGeneratedGroceryListId()))
+                .recommended(getDaysDetailsDto(planedMenus.getDaysList()))
                 .endDate(planedMenus.getEndData()).build();
     }
 
@@ -190,18 +213,22 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
             groceryDetailsDto.setPredictedTime(details.getPredictedTime());
             groceryDetailsDto.setPredictedPrice(details.getPredictedAmount());
             List<GroceryItem> detailsList = new ArrayList<>();
+
             for (GroceryDetails groceryDetail : details.getGroceryDetails()){
                 GroceryItem item = new GroceryItem();
+                item.setGroceryItemId(groceryDetail.getId());
                 item.setIngredientName(groceryDetail.getName());
                 item.setUnit(groceryDetail.getUnit());
                 item.setQuantity(groceryDetail.getQty());
-
                 List<GroceryPromotionDto> promotionDtos = new ArrayList<>();
-                for (GroceryPromotion promotion :groceryDetail.getPromotions()){
+                if(groceryDetail.getPromotionId()  != null){
                     GroceryPromotionDto groceryPromotionDto = new GroceryPromotionDto();
-                    groceryPromotionDto.setPrice(promotion.getPrice());
-                    groceryPromotionDto.setSuperMarketName(promotion.getShopName());
+                    groceryPromotionDto.setPromotionId(groceryDetail.getPromotionId());
+                    groceryPromotionDto.setPrice(groceryDetail.getDiscountRate());
+                    groceryPromotionDto.setSuperMarketName(groceryDetail.getChosenSuperMarket());
                     promotionDtos.add(groceryPromotionDto);
+                }else {
+                    promotionDtos.addAll(getGroceryPromotionDto());
                 }
                 item.setGroceryPromotionDtos(promotionDtos);
                 detailsList.add(item);
@@ -358,35 +385,44 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
         GroceryDetails groceryItem1 = new GroceryDetails();
         groceryItem1.setName("Sugar");
         groceryItem1.setQty("1Kg 500g");
-        groceryItem1.setPromotions(getGroceryPromotion());
+        groceryItem1.setPrice(1.0);
+
+
         GroceryDetails groceryItem2 = new GroceryDetails();
         groceryItem2.setName("Salt");
-        groceryItem2.setPrice("1Kg 100g");
-        groceryItem2.setPromotions(getGroceryPromotion());
+        groceryItem2.setQty("1Kg 100g");
+        groceryItem2.setPrice(1.0);
+
         GroceryDetails groceryItem3 = new GroceryDetails();
         groceryItem3.setName("Bread");
         groceryItem3.setQty("2 ");
-        groceryItem3.setPromotions(getGroceryPromotion());
+        groceryItem3.setPrice(3.0);
+
         GroceryDetails groceryItem4 = new GroceryDetails();
         groceryItem4.setName("Flour");
         groceryItem4.setQty("1Kg 500g");
-        groceryItem4.setPromotions(getGroceryPromotion());
+        groceryItem4.setPrice(7.0);
+
         GroceryDetails groceryItem5 = new GroceryDetails();
         groceryItem5.setName("Rice");
         groceryItem5.setQty("1Kg 500g");
-        groceryItem5.setPromotions(getGroceryPromotion());
+        groceryItem5.setPrice(3.0);
+
         GroceryDetails groceryItem6 = new GroceryDetails();
         groceryItem6.setName("Cream Cheese");
         groceryItem6.setQty("500g");
-        groceryItem6.setPromotions(getGroceryPromotion());
+        groceryItem6.setPrice(5.0);
+
         GroceryDetails groceryItem7 = new GroceryDetails();
         groceryItem7.setName("Chicken");
         groceryItem7.setQty("500g");
-        groceryItem7.setPromotions(getGroceryPromotion());
+        groceryItem7.setPrice(4.0);
+
         GroceryDetails groceryItem8 = new GroceryDetails();
         groceryItem8.setName("Eggs");
         groceryItem8.setQty("500g");
-        groceryItem8.setPromotions(getGroceryPromotion());
+        groceryItem8.setPrice(8.0);
+
         items.add(groceryItem1);
         items.add(groceryItem2);
         items.add(groceryItem3);
@@ -402,15 +438,19 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
         GroceryPromotionDto groceryPromotionDto1 = new GroceryPromotionDto();
         groceryPromotionDto1.setSuperMarketName(Supermarket.ALDI.name());
         groceryPromotionDto1.setPrice(2);
+        groceryPromotionDto1.setStatus("ACTIVE");
+        groceryPromotionDto1.setPromotionId(1L);
 
         GroceryPromotionDto groceryPromotionDto2 = new GroceryPromotionDto();
         groceryPromotionDto2.setSuperMarketName(Supermarket.KELLS.name());
         groceryPromotionDto2.setPrice(5);
-
+        groceryPromotionDto2.setPromotionId(2L);
+        groceryPromotionDto1.setStatus("ACTIVE");
         GroceryPromotionDto groceryPromotionDto3 = new GroceryPromotionDto();
         groceryPromotionDto3.setSuperMarketName(Supermarket.SPAR.name());
         groceryPromotionDto3.setPrice(5);
-
+        groceryPromotionDto3.setPromotionId(3L);
+        groceryPromotionDto1.setStatus("ACTIVE");
         groceryPromotionDtos.add(groceryPromotionDto1);
         groceryPromotionDtos.add(groceryPromotionDto2);
         groceryPromotionDtos.add(groceryPromotionDto3);
@@ -420,18 +460,21 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
     private  List<GroceryPromotion> getGroceryPromotion(){
         List<GroceryPromotion> groceryPromotions = new ArrayList<>();
         GroceryPromotion groceryPromotion1 = new GroceryPromotion();
+        groceryPromotion1.setId(1L);
         groceryPromotion1.setShopName(Supermarket.ALDI.name());
         groceryPromotion1.setPrice(2.0);
         groceryPromotion1.setStatus("ACTIVE");
         groceryPromotion1.setDiscountedRate(5.0);
 
         GroceryPromotion groceryPromotion2 = new GroceryPromotion();
+        groceryPromotion1.setId(2L);
         groceryPromotion2.setShopName(Supermarket.KELLS.name());
         groceryPromotion2.setPrice(5.0);
         groceryPromotion2.setStatus("ACTIVE");
         groceryPromotion1.setDiscountedRate(5.0);
 
         GroceryPromotion groceryPromotion3 = new GroceryPromotion();
+        groceryPromotion1.setId(3L);
         groceryPromotion3.setShopName(Supermarket.SPAR.name());
         groceryPromotion3.setPrice(5.0);
         groceryPromotion3.setStatus("ACTIVE");

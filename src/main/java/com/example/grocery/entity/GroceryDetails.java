@@ -3,6 +3,7 @@ package com.example.grocery.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +22,16 @@ public class GroceryDetails {
 
     private String unit;
 
-    private String price;
+    private Double price;
+
+    private Long promotionId;
+
+    private String chosenSuperMarket;
+
+    private double discountRate;
+
     @ManyToOne
     @JoinColumn(name="planned_grocery_list_details_id",referencedColumnName = "id")
     private PlannedGroceryListDetails plannedGroceryListDetails;
 
-    @OneToMany(mappedBy = "groceryDetails",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<GroceryPromotion> promotions = new ArrayList<>();
 }

@@ -1,5 +1,7 @@
 package com.example.grocery.service;
 
+import com.example.grocery.dto.GroceryDetailsDto;
+import com.example.grocery.dto.GroceryDetailsUpdatedDto;
 import com.example.grocery.dto.MenuCreateRequest;
 import com.example.grocery.dto.MenuDetailsDto;
 import org.springframework.stereotype.Service;
@@ -13,4 +15,6 @@ public interface PlanedMenusService {
     List<MenuDetailsDto> getMenusByDateRange(String userId, Long startDate, Long endDate, String sortType, Long menuId);
 
     MenuDetailsDto getMenuById(Long menuId) throws Exception;
+
+    void  updatedMenuPromotions(GroceryDetailsUpdatedDto groceryDetailsUpdatedDto);
 }

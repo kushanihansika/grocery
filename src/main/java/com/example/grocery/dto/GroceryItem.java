@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class GroceryItem {
 
+   private Long groceryItemId;
    private String ingredientName;
 
    private String quantity;

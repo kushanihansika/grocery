@@ -17,5 +17,5 @@ public class GroceryItem {
    private String quantity;
    private String unit;
 
-   private List<GroceryPromotionDto> groceryPromotionDtos;
+   private List<GroceryPromotionDto> groceryPromotions;
 }

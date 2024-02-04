@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DaysRecipeDetailsDto {
-    private MenueType menueType;
-    private RecipeDetailsDto recipeDetailsDto;
+    private MenuType menuType;
+    private RecipeDetailsDto recipeDetail;
 }

@@ -52,9 +52,9 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
            if(Boolean.TRUE.equals(createRequest.getIsVeg())){
                vegOrNonVeg="VEG";
            }
-        List<String> recipesNamesDinner = getRecommendations(MenueType.DINNER.name(), vegOrNonVeg);
-        List<String> recipesNamesLunch = getRecommendations(MenueType.LUNCH.name(),vegOrNonVeg);
-        List<String> recipesNamesBreakfast = getRecommendations(MenueType.BREAKFAST.name(), vegOrNonVeg);
+        List<String> recipesNamesDinner = getRecommendations(MenuType.DINNER.name(), vegOrNonVeg);
+        List<String> recipesNamesLunch = getRecommendations(MenuType.LUNCH.name(),vegOrNonVeg);
+        List<String> recipesNamesBreakfast = getRecommendations(MenuType.BREAKFAST.name(), vegOrNonVeg);
         List<Recipe> recipeListDinner = new ArrayList<>();
         List<Recipe> recipeListLunch = new ArrayList<>();
         List<Recipe> recipeListBreakfast = new ArrayList<>();
@@ -196,7 +196,7 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
         System.out.println("recipes"+day.getRecipes());
         for (Recipe recipe: day.getRecipes()){
             DaysRecipeDetailsDto daysRecipeDetailsDto = new DaysRecipeDetailsDto();
-            daysRecipeDetailsDto.setMenueType(MenueType.valueOf(recipe.getMenuType()));
+            daysRecipeDetailsDto.setMenueType(MenuType.valueOf(recipe.getMenuType()));
             daysRecipeDetailsDto.setRecipeDetailsDto(getRecipeDetailsDto(recipe));
             detailsDtoList.add(daysRecipeDetailsDto);
         }

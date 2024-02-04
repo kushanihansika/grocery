@@ -1,6 +1,6 @@
 package com.example.grocery.dto;
 
-public enum MenueType {
+public enum MenuType {
 
     DINNER,LUNCH,BREAKFAST
 }

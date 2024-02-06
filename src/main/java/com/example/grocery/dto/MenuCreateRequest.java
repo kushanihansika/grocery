@@ -15,7 +15,7 @@ public class MenuCreateRequest {
     private LocalDate startDate;
     private LocalDate endDate;
     private Long generatedGroceryListId;
-    private MenuType type;
+    private MenueType type;
     private Boolean isVeg;
 
 }

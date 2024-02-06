@@ -19,5 +19,5 @@ public class MenuDetailsDto {
     private Long endDate;
     private List<RecipeDetailsDto> recipeDetails;
     private List<DaysDetailsDto> recommended;
-    private GroceryDetailsDto groceryDetail;
+    private GroceryDetailsDto groceryDetailsDto;
 }

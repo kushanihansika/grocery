@@ -17,4 +17,6 @@ public interface PlanedMenusService {
     MenuDetailsDto getMenuById(Long menuId) throws Exception;
 
     void  updatedMenuPromotions(GroceryDetailsUpdatedDto groceryDetailsUpdatedDto);
+
+    List<GroceryDetailsDto> getALlGroceryDetailsDto(Long menuId);
 }

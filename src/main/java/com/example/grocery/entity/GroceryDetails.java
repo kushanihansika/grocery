@@ -30,6 +30,8 @@ public class GroceryDetails {
 
     private double discountRate;
 
+    private Boolean isSelectedPromo;
+
     @ManyToOne
     @JoinColumn(name="planned_grocery_list_details_id",referencedColumnName = "id")
     private PlannedGroceryListDetails plannedGroceryListDetails;

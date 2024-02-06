@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Builder
@@ -15,8 +16,8 @@ public class MenuDetailsDto {
 
     private Long id;
     private Long userId;
-    private Long startDate;
-    private Long endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private List<RecipeDetailsDto> recipeDetails;
     private List<DaysDetailsDto> recommended;
     private GroceryDetailsDto groceryDetail;

@@ -1,8 +1,10 @@
 package com.example.grocery.entity;
 
+import com.example.grocery.dto.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +17,10 @@ public class PlanedMenus {
     private Long id;
     private String userId;
     private int days;
-    private Long startDate;
-    private Long endData;
+    private LocalDate startDate;
+    private LocalDate endData;
     private Long generatedGroceryListId;
+    private Status status;
 
 
     @OneToMany(mappedBy = "planedMenus",cascade = CascadeType.ALL, fetch = FetchType.EAGER)

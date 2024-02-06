@@ -45,10 +45,7 @@ public class MenuController {
             @RequestParam(value = "menuId",required = false)Long menuId
            ) {
         try {
-
-
             List<MenuDetailsDto> menus = planedMenusService.getMenusByDateRange( userId,startDate, endDate, sortType, menuId);
-
             return new ResponseEntity<>(menus, HttpStatus.OK);
         } catch (Exception e) {
             throw e;
@@ -58,10 +55,8 @@ public class MenuController {
 
     @GetMapping("/{menuId}")
     public ResponseEntity<MenuDetailsDto> getById(@PathVariable String menuId) throws Exception {
-
             MenuDetailsDto menuDetailsDto= planedMenusService.getMenuById(Long.valueOf(menuId));
             return new ResponseEntity<>(menuDetailsDto, HttpStatus.OK);
-
     }
 
     @PutMapping()
@@ -69,6 +64,11 @@ public class MenuController {
         planedMenusService.updatedMenuPromotions(groceryDetailsDto);
         return new ResponseEntity<>( HttpStatus.OK);
     }
+    @GetMapping("/getAllGroceryDetails")
+    public ResponseEntity<List<GroceryDetailsDto>> getALlGroceryDetailsDto(@RequestParam(required = false) Long menuId) throws Exception {
+        List<GroceryDetailsDto> allGroceryDetailsDto= planedMenusService.getALlGroceryDetailsDto(menuId);
+        return new ResponseEntity<>(allGroceryDetailsDto, HttpStatus.OK);
 
+    }
 
 }

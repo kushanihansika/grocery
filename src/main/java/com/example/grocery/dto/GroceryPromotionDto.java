@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GroceryPromotionDto {
-private Long promotionId;
-private String superMarketName;
-private double price;
-private String status;
+    private Long promotionId;
+    private String superMarketName;
+    private double price;
+    private String status;
+    private boolean isSelected;
 }

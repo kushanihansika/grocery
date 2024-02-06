@@ -16,6 +16,5 @@ public class DaysDetailsDto {
     private String caloriesPerDay;
     private List<DaysRecipeDetailsDto> daysRecipeDetails;
 
-    private List<DaysRecipeDetailsDto> daysRecipeDetailsDto;
 
 }

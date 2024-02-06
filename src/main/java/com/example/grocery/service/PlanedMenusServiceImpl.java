@@ -170,9 +170,9 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
         for (GroceryItem groceryItem :groceryDetailsUpdatedDto.getGroceryItems()){
             Optional<GroceryDetails> groceryDetails = groceryDetailsRepository.findById(groceryItem.getGroceryItemId());
             GroceryDetails details = groceryDetails.get();
-//            details.setPromotionId(groceryItem.getGroceryPromotionDtos().get(0).getPromotionId());
-//            details.setChosenSuperMarket(groceryItem.getGroceryPromotionDtos().get(0).getSuperMarketName());
-//            details.setDiscountRate(groceryItem.getGroceryPromotionDtos().get(0).getPrice());
+            details.setPromotionId(groceryItem.getGroceryPromotions().get(0).getPromotionId());
+            details.setChosenSuperMarket(groceryItem.getGroceryPromotions().get(0).getSuperMarketName());
+            details.setDiscountRate(groceryItem.getGroceryPromotions().get(0).getPrice());
             groceryDetailsRepository.save(details);
         }
 

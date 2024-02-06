@@ -91,16 +91,8 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
            dayRecipe.add(getAllLunchRecipes.get(day.intValue()));
            dayRecipe.add(getAllBreakfastRecipes.get(day.intValue()));
            days.setRecipes(dayRecipe);
-           List<RecipeDetailsDto> recipeDetailsDtos=dayRecipe.stream().map(this::getRecipeDetailsDto).toList();
-           int sumOfCalories = recipeDetailsDtos.stream()
-                   .mapToInt(value -> Integer.parseInt(value.getCalories())) // Assuming getCalories is the getter for calories
-                   .sum();
-           days.setCaloriesPerDay(Integer.toString(sumOfCalories));
            daysList.add(days);
         }
-
-
-
        List<String> plannedAllRecipesIdList= new ArrayList<>();
        // generate groceryList
         for(Days day : daysList){
@@ -171,21 +163,20 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
         for (GroceryItem groceryItem :groceryDetailsUpdatedDto.getGroceryItems()){
             Optional<GroceryDetails> groceryDetails = groceryDetailsRepository.findById(groceryItem.getGroceryItemId());
             GroceryDetails details = groceryDetails.get();
-            details.setPromotionId(groceryItem.getGroceryPromotionDtos().get(0).getPromotionId());
-            details.setChosenSuperMarket(groceryItem.getGroceryPromotionDtos().get(0).getSuperMarketName());
-            details.setDiscountRate(groceryItem.getGroceryPromotionDtos().get(0).getPrice());
+//            details.setPromotionId(groceryItem.getGroceryPromotionDtos().get(0).getPromotionId());
+//            details.setChosenSuperMarket(groceryItem.getGroceryPromotionDtos().get(0).getSuperMarketName());
+//            details.setDiscountRate(groceryItem.getGroceryPromotionDtos().get(0).getPrice());
             groceryDetailsRepository.save(details);
         }
 
     }
     private List<DaysDetailsDto> getDaysDetailsDto(List<Days> days){
-
+        System.out.println("days"+days.toString());
     List<DaysDetailsDto> dtos = new ArrayList<>();
     for (Days day : days){
         DaysDetailsDto detailsDto = new DaysDetailsDto();
         detailsDto.setDayId(day.getDayId());
         detailsDto.setDayName(day.getDayName());
-        detailsDto.setCaloriesPerDay(day.getCaloriesPerDay());
         detailsDto.setDaysRecipeDetailsDto(getDaysRecipeDetailsDto(day));
         dtos.add(detailsDto);
     }

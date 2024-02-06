@@ -12,6 +12,10 @@ import java.util.List;
 public class DaysDetailsDto {
     private String dayName;
     private Long dayId;
+
     private String caloriesPerDay;
     private List<DaysRecipeDetailsDto> daysRecipeDetails;
+
+    private List<DaysRecipeDetailsDto> daysRecipeDetailsDto;
+
 }

@@ -1,6 +1,7 @@
 package com.example.grocery.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +20,7 @@ public class Days {
 
     private String dayName;
 
-    private String caloriesPerDay;
+
     @ManyToOne
     @JoinColumn(name="menu_id",referencedColumnName = "id")
     private PlanedMenus planedMenus;

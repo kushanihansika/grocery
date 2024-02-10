@@ -15,6 +15,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
 import java.util.List;
 
 import java.util.*;
@@ -42,10 +43,10 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
 
             PlanedMenus planedMenus = new PlanedMenus();
             planedMenus.setUserId(createRequest.getUserId());
-            planedMenus.setStartDate(createRequest.getStartDate());
-            planedMenus.setEndData(createRequest.getEndDate());
+            planedMenus.setStartDate(LocalDate.parse(createRequest.getStartDate()));
+            planedMenus.setEndData(LocalDate.parse(createRequest.getEndDate()));
             planedMenus.setGeneratedGroceryListId(createRequest.getGeneratedGroceryListId());
-            Long daysCount = DateCalculator.calculateDaysBetween(createRequest.getStartDate(),createRequest.getEndDate());
+            Long daysCount = DateCalculator.calculateDaysBetween(LocalDate.parse(createRequest.getStartDate()),LocalDate.parse(createRequest.getEndDate()));
             // Fetch recipes by their IDs
            String vegOrNonVeg ="NON VEG";
            if(Boolean.TRUE.equals(createRequest.getIsVeg())){
@@ -288,7 +289,10 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
                 .protein(nutritionMap.get("Protein"))
                 .prepTime(recipe.getPrepTime())
                 .images(recipe.getImages())
-                .totalTime(recipe.getTotalTime()).directions(parseSteps(recipe.getDirections())).build();
+                .totalTime(recipe.getTotalTime())
+                .directions(parseSteps(recipe.getDirections()))
+                .directionsList(parseStepsDirections(recipe.getDirections()))
+                .build();
     }
 
 
@@ -307,7 +311,19 @@ public class PlanedMenusServiceImpl implements PlanedMenusService{
     }
 
 
-
+    private  List<String> parseStepsDirections(String input) {
+        List<String> getList = new ArrayList<>();
+        Map<String, String> stepMap = new HashMap<>();
+        Pattern pattern = Pattern.compile("Step\\d+:\\s(.*?)(?=(Step\\d+|$))", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+            String step = matcher.group(1).trim();
+            String stepNumber = matcher.group().split(":")[0].trim();
+            stepMap.put(stepNumber, step);
+            getList.add(step);
+        }
+        return getList;
+    }
 
     public List<String> getRecommendations(String recipeType, String vegType) throws Exception {
         String url = fastApiBaseUrl + "/recommend/?recipe_type=" + recipeType + "&veg_type=" + vegType;

@@ -22,7 +22,7 @@ public class RecipeDetailsDto {
     private String description;
 
     private Map<String, String> directions;
-
+    private List<String> directionsList;
     private String images;
 
     private List<String> ingredients;

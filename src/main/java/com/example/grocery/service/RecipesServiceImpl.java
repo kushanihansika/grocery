@@ -82,11 +82,13 @@ public class RecipesServiceImpl implements RecipesService {
                 .protein(nutritionMap.get("Protein"))
                 .prepTime(recipe.getPrepTime())
                 .images(recipe.getImages())
-                .totalTime(recipe.getTotalTime()).directions(parseSteps(recipe.getDirections())).build();
+                .totalTime(recipe.getTotalTime())
+                .directions(parseSteps(recipe.getDirections()))
+                .directionsList(parseStepsDirections(recipe.getDirections())).build();
     }
 
 
-    private static Map<String, String> parseSteps(String input) {
+    private  Map<String, String> parseSteps(String input) {
         Map<String, String> stepMap = new HashMap<>();
         Pattern pattern = Pattern.compile("Step\\d+:\\s(.*?)(?=(Step\\d+|$))", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(input);
@@ -97,7 +99,22 @@ public class RecipesServiceImpl implements RecipesService {
         }
         return stepMap;
     }
-
+    private  List<String> parseStepsDirections(String input) {
+        System.out.println("calling");
+        List<String> getList = new ArrayList<>();
+        Map<String, String> stepMap = new HashMap<>();
+        Pattern pattern = Pattern.compile("Step\\d+:\\s(.*?)(?=(Step\\d+|$))", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+            String step = matcher.group(1).trim();
+            String stepNumber = matcher.group().split(":")[0].trim();
+            stepMap.put(stepNumber, step);
+            getList.add(step);
+            System.out.println("calling2");
+        }
+        System.out.println("calling3");
+        return getList;
+    }
     public GroceryDetailsDto getGroceryDetailsDto(CreateGroceryListDto groceryListDto){
        GroceryDetailsDto groceryDetailsDto = new GroceryDetailsDto();
        groceryDetailsDto.setGroceryListId(1L);
